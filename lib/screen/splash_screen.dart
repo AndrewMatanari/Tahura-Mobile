@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'login_screen.dart'; // Import your login screen
+import 'katalog_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+
+    _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+
+    _controller.forward();
+
+    Timer(
+      const Duration(seconds: 3),
+      () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    });
+        MaterialPageRoute(builder: (context) => Katalog()),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -27,21 +48,39 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/img/logo.png', width: 268, height: 115),
-            SizedBox(height: 250),
-            Image.asset('assets/img/Wildlife.png', width: 375, height: 348),
-          ],
-        ),
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: Container(
+                child: Image.asset(
+                  'assets/img/logo.png',
+                ),
+                alignment: Alignment.center,
+              ),
+            ),
+          Center(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Image.asset(
+                'assets/img/Wildlife.png',
+              ),
+            ),
+          ),
+        ],
+      ),
       ),
     );
+
   }
-}
-
 void main() {
-  runApp(MaterialApp(
-    home: SplashScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(
+    MaterialApp(
+      home: SplashScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+      ),
+      debugShowCheckedModeBanner: false,
+    ),
+  );
 }
-
+}
 
