@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tahura_mobile/screen/home_screen.dart';
+import 'package:tahura_mobile/screen/settings_screen.dart';
 import 'package:tahura_mobile/screen/splash_screen.dart';
 
 void main() {

@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.14
   google_fonts: ^6.2.1
   flutter_feather_icons: ^2.0.0+1
+  customizable_counter: ^1.0.4
 
 dev_dependencies:
   flutter_test:

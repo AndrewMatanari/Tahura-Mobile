@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tahura_mobile/screen/home_screen.dart';
 import 'signup_screen.dart'; // Make sure to import the signup screen
 
 class LoginScreen extends StatefulWidget {
@@ -63,7 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle login logic
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50),
