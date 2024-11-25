@@ -57,7 +57,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                 labelText: 'Nama Pemesan',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.0),
-                ),
+                )
               ),
             ),
             SizedBox(height: 16.0),
