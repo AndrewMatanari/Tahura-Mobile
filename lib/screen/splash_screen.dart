@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tahura_mobile/screen/pesan_tiket.dart';
 import 'dart:async';
 import 'login_screen.dart'; // Import your login screen
 
@@ -14,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) =>  PemesananTiketScreen()),
       );
     });
   }
@@ -27,9 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/img/logo.png', width: 268, height: 115),
+            Image.asset('img/logo.png', width: 268, height: 115),
             SizedBox(height: 250),
-            Image.asset('assets/img/Wildlife.png', width: 375, height: 348),
+            Image.asset('img/Wildlife.png', width: 375, height: 348),
           ],
         ),
       ),
