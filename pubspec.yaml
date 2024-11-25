@@ -39,7 +39,11 @@ dependencies:
   flutter_svg: ^2.0.14
   google_fonts: ^6.2.1
   flutter_feather_icons: ^2.0.0+1
+<<<<<<< HEAD
   customizable_counter: ^1.0.4
+=======
+  qr_flutter: ^4.0.0
+>>>>>>> 7541c913bb012065a2f2fbad06e02f815312338a
 
 dev_dependencies:
   flutter_test:
@@ -64,8 +68,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/img/
-    
+    - img/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
