@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:tahura_mobile/screen/detailproduk_screen.dart';
+import 'package:tahura_mobile/screen/katalog_screen.dart';
+import 'package:tahura_mobile/screen/login_screen.dart';
+import 'package:tahura_mobile/screen/pesan_tiket.dart';
+import 'package:tahura_mobile/screen/riwayat_screen.dart';
 import 'package:tahura_mobile/screen/settings_screen.dart';
+import 'package:tahura_mobile/screen/tike_screnn.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 50),
                   CircleAvatar(
-                    backgroundImage: Image.asset('assets/img/user_avatar.png').image,
+                    backgroundImage: Image.asset('img/user_avatar.png').image,
                     radius: 60,
                   ),
                   const SizedBox(height: 10),
@@ -66,12 +73,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //   builder: (context) => const SettingScreen(),
-                      //   )
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => RiwayatScreen(),
+                        )
+                      );
                     },
                   ),
                   ListTile(
@@ -87,12 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //   builder: (context) => const CartScreen(),
-                      //   )
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => Katalog(),
+                        )
+                      );
                     },
                   ),
                   ListTile(
@@ -131,11 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onTap: () {
-                  // Navigator.pushAndRemoveUntil(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  //   (Route<dynamic> route) => false,
-                  // );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
               ),
             ],
@@ -164,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Image.asset(
-                      'assets/img/home_image.png',
+                      'img/home_image.png',
                     ),
                   ],
                 ),
@@ -198,7 +205,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 10,),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PemesananTiketScreen()),
+                    );
+                  },
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(56, 166, 140, 1)),
                   ),
@@ -292,7 +304,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(width: 10),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => QRCodeScreen()),
+                                      );
+                                    },
                                     child: Container(
                                       height: 30,
                                       width: 30,
@@ -314,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       );
                     },
-                    itemCount: 3,
+                    itemCount: 1,
                   ),
                 ),
                 const SizedBox(height: 10,),
@@ -373,7 +390,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const ProductDetailPage(
+                                              product: {
+                                              'image': 'img/tas 2.png',
+                                              'title': 'Tas Rotan',
+                                              'price': 'Rp. 60.000',
+                                              }
+                                            )),
+                                          );
+                                        },
                                         child: Text(
                                           'Selengkapnya',
                                           style: GoogleFonts.plusJakartaSans(
@@ -385,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  Image.asset('assets/img/tas_anjay.png', width: 170),
+                                  Image.asset('img/tas 2.png', width: 170),
                                 ]
                               ),
                             ),

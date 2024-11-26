@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:tahura_mobile/screen/home_screen.dart';
-import 'package:tahura_mobile/screen/settings_screen.dart';
-=======
-import 'package:tahura_mobile/screen/pesan_tiket.dart';
->>>>>>> 7541c913bb012065a2f2fbad06e02f815312338a
 import 'package:tahura_mobile/screen/splash_screen.dart';
 
 void main() {

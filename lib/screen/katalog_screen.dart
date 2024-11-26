@@ -1,41 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tahura_mobile/screen/detailproduk_screen.dart';
+import 'package:tahura_mobile/screen/home_screen.dart';
 
 class Katalog extends StatelessWidget {
   final List<Map<String, String>> products = [
     {
-      'image': 'assets/img/image 11.png',
+      'image': 'img/image 11.png',
       'title': 'Topi Rotan',
       'category': 'Topi',
       'price': 'Rp. 30.000',
     },
     {
-      'image': 'assets/img/image 14.png',
+      'image': 'img/image 14.png',
       'title': 'Gantungan Lampu',
       'category': 'Accessories',
       'price': 'Rp. 25.000',
     },
     {
-      'image': 'assets/img/image 13.png',
+      'image': 'img/image 13.png',
       'title': 'Nampan Rotan',
       'category': 'Peralatan Dapur',
       'price': 'Rp. 40.000',
     },
     {
-      'image': 'assets/img/image 12.png',
+      'image': 'img/image 12.png',
       'title': 'Keranjang Rotan',
       'category': 'Accessories',
       'price': 'Rp. 50.000',
     },
     {
-      'image': 'assets/img/image 10.png',
+      'image': 'img/image 10.png',
       'title': 'Kursi Nenek Turbo',
       'category': 'Mebel',
       'price': 'Rp. 200.000',
     },
     {
-      'image': 'assets/img/tas 2.png',
+      'image': 'img/tas 2.png',
       'title': 'Tas Wanita Rotan',
       'category': 'Women’s Bags',
       'price': 'Rp. 70.000',
@@ -50,7 +51,12 @@ class Katalog extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
         ),
         title: Text(
           'Katalog Produk',

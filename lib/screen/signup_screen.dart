@@ -24,7 +24,7 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset('assets/img/logo.png', width: 100, height: 100),
+              Image.asset('img/logo.png', width: 100, height: 100),
               const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(

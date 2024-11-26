@@ -118,7 +118,7 @@ class QRCodeScreen extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor: Color.fromRGBO(56, 166, 140, 1),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -127,6 +127,7 @@ class QRCodeScreen extends StatelessWidget {
               child: Text(
                 'Kembali',
                 style: TextStyle(
+                  color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),

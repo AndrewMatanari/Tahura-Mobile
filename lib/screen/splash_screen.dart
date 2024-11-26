@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tahura_mobile/screen/pesan_tiket.dart';
+import 'package:tahura_mobile/screen/home_screen.dart';
 import 'dart:async';
 import 'katalog_screen.dart';
 
@@ -30,8 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-<<<<<<< HEAD
-        MaterialPageRoute(builder: (context) => Katalog()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       ),
     );
   }
@@ -40,11 +39,6 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
-=======
-        MaterialPageRoute(builder: (context) =>  PemesananTiketScreen()),
-      );
-    });
->>>>>>> 7541c913bb012065a2f2fbad06e02f815312338a
   }
 
   @override
@@ -55,12 +49,11 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-<<<<<<< HEAD
             FadeTransition(
               opacity: _fadeAnimation,
               child: Container(
                 child: Image.asset(
-                  'assets/img/logo.png',
+                  'img/logo.png',
                 ),
                 alignment: Alignment.center,
               ),
@@ -69,19 +62,12 @@ class _SplashScreenState extends State<SplashScreen>
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: Image.asset(
-                'assets/img/Wildlife.png',
+                'img/Wildlife.png',
               ),
             ),
           ),
         ],
       ),
-=======
-            Image.asset('img/logo.png', width: 268, height: 115),
-            SizedBox(height: 250),
-            Image.asset('img/Wildlife.png', width: 375, height: 348),
-          ],
-        ),
->>>>>>> 7541c913bb012065a2f2fbad06e02f815312338a
       ),
     );
 
@@ -98,4 +84,3 @@ void main() {
   );
 }
 }
-

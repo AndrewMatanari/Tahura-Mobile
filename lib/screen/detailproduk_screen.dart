@@ -149,7 +149,7 @@ void main() {
   runApp(MaterialApp(
     home: ProductDetailPage(
       product: {
-        'image': 'assets/img/tas 2.png',
+        'image': 'img/tas 2.png',
         'title': 'Tas Rotan Wanita',
         'price': 'Rp. 70.000',
       },

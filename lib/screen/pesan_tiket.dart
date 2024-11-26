@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tahura_mobile/screen/bayar_splash.dart';
+import 'package:tahura_mobile/screen/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,6 @@ class MyApp extends StatelessWidget {
       title: 'Pemesanan Tiket',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        fontFamily: 'Roboto',
       ),
       home: PemesananTiketScreen(),
     );
@@ -37,8 +37,13 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
         ),
         title: Text(
           'Pemesanan Tiket',
@@ -235,7 +240,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(56, 166, 140, 1),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
@@ -260,7 +265,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
             _kendaraan = selected! ? value : null;
           });
         },
-        title: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 14.0)),
+        title: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13.0)),
         controlAffinity: ListTileControlAffinity.leading,
         dense: true,
       ),

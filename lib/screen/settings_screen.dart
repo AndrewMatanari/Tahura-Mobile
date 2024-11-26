@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tahura_mobile/screen/home_screen.dart';
+import 'package:tahura_mobile/screen/katalog_screen.dart';
+import 'package:tahura_mobile/screen/login_screen.dart';
+import 'package:tahura_mobile/screen/riwayat_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -36,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   CircleAvatar(
-                    backgroundImage: Image.asset('assets/img/user_avatar.png').image,
+                    backgroundImage: Image.asset('img/user_avatar.png').image,
                     radius: 60,
                   ),
                   const SizedBox(height: 10),
@@ -62,12 +65,12 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //   builder: (context) => const SettingScreen(),
-                      //   )
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => RiwayatScreen(),
+                        )
+                      );
                     },
                   ),
                   ListTile(
@@ -83,12 +86,12 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //   builder: (context) => const CartScreen(),
-                      //   )
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => Katalog(),
+                        )
+                      );
                     },
                   ),
                   ListTile(
@@ -104,12 +107,12 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //   builder: (context) => const CartScreen(),
-                      //   )
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
+                        )
+                      );
                     },
                   ),
                 ],
@@ -127,11 +130,11 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // Navigator.pushAndRemoveUntil(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  //   (Route<dynamic> route) => false,
-                  // );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
               ),
             ],
@@ -157,7 +160,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     CircleAvatar(
-                      backgroundImage: Image.asset('assets/img/user_avatar.png').image,
+                      backgroundImage: Image.asset('img/user_avatar.png').image,
                       radius: 60,
                     ),
                     const SizedBox(height: 20),
@@ -229,7 +232,7 @@ class SettingsScreen extends StatelessWidget {
                         backgroundColor: const Color(0xFF38A68C),
                       ),
                       child: const Text(
-                        'Login',
+                        'Kembali',
                         style: TextStyle(color: Colors.white)
                       ),
                     ),
