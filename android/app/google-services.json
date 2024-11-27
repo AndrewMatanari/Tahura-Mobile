@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "566943741773",
+    "project_id": "rpll-ea748",
+    "storage_bucket": "rpll-ea748.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566943741773:android:94bf7fdf2c2593649aa904",
+        "android_client_info": {
+          "package_name": "com.example.tahura_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566943741773-d6rvj7bd1jl2kc12hisd2pqkpk8sf8o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tahura_mobile",
+            "certificate_hash": "f513d3206dfea08d84f851471fcd44743b0d06b2"
+          }
+        },
+        {
+          "client_id": "566943741773-8h8h1aac2pil1ht0bgpm4f9gr8j2h1pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH4GZVv2-5jG6DK1Aae4WgIwz8M7c09W8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566943741773-8h8h1aac2pil1ht0bgpm4f9gr8j2h1pe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

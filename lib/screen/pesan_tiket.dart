@@ -55,6 +55,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
+          padding: EdgeInsets.all(16.0),
           children: [
             // Nama Pemesan
             TextField(
