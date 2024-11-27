@@ -67,7 +67,7 @@ class QRCodeScreen extends StatelessWidget {
 
             // QR Code
             QrImageView(
-              data: 'THB-001', // Data untuk QR Code
+              data: 'Halo Bromi', // Data untuk QR Code
               version: QrVersions.auto,
               size: 200.0,
               errorCorrectionLevel: QrErrorCorrectLevel.M,

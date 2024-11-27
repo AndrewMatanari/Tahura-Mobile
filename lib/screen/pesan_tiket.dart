@@ -133,7 +133,9 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
               style: GoogleFonts.plusJakartaSans(
                   fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _buildCheckbox('Mobil', 'Mobil'),
                 _buildCheckbox('Sepeda Motor', 'Sepeda Motor'),
@@ -257,7 +259,8 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
   }
 
   Widget _buildCheckbox(String label, String value) {
-    return Expanded(
+    return Container(
+      width: 300,
       child: CheckboxListTile(
         value: _kendaraan == value,
         onChanged: (selected) {
@@ -265,9 +268,9 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
             _kendaraan = selected! ? value : null;
           });
         },
-        title: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 13.0)),
+        title: Text(label, style: GoogleFonts.plusJakartaSans(fontSize: 15.0)),
         controlAffinity: ListTileControlAffinity.leading,
-        dense: true,
+        dense: false,
       ),
     );
   }
