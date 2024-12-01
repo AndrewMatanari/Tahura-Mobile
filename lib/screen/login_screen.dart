@@ -1,8 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tahura_mobile/screen/home_screen.dart';
-import 'signup_screen.dart'; // Make sure to import the signup screen
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,39 +14,92 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Google Sign-In instance
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  // Google Sign-In function
+  /// Validasi email menggunakan regex
+  bool _isValidEmail(String email) {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  /// Login dengan API
+  Future<void> _login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    // Validasi input
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email dan Password tidak boleh kosong')),
+      );
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Format email tidak valid')),
+      );
+      return;
+    }
+
+    try {
+      Uri uri = Uri.https(
+        'adminthp.mahasiswarandom.my.id',
+        '/api/login',
+        {'email': email, 'password': password},
+      );
+
+      final response = await http.post(uri);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['email'] == emailController.text) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(data['message'] ?? 'Login gagal')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server error: ${response.statusCode}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
+
+  /// Login dengan Google
   Future<void> _signInWithGoogle() async {
     try {
-      // Trigger the Google sign-in flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        // User canceled the sign-in
-        return;
-      }
+      if (googleUser == null) return;
 
-      // Obtain the authentication details
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      // Create a new credential
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
         accessToken: googleAuth.accessToken,
       );
 
-      // Sign in to Firebase with the Google credential
       await FirebaseAuth.instance.signInWithCredential(credential);
-
-      // After successful sign-in, navigate to HomeScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } catch (e) {
-      print("Google sign-in error: $e");
-      // You can show an error message or handle the error accordingly
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Google sign-in error: $e")),
+      );
     }
   }
 
@@ -54,106 +109,64 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 10),
-                  Image.asset('img/logo.png', width: 300, height: 300),
-                ],
-              ),
-              SizedBox(height: 50),
-              // Email Field
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('img/logo.png', width: 200, height: 200),
+                const SizedBox(height: 50),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    hintText: 'example@gmail.com',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
                 ),
-              ),
-              SizedBox(height: 20),
-              // Password Field
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 10),
-              // Forgot Password
-              Align(
-                alignment: Alignment.bottomRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: Colors.blue,
-                    ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-              ),
-              SizedBox(height: 30),
-              // Login Button
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: 'email',
-                        password: 'password',
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
-                      }
-                    }
-                  },
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: _login,
+                  child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                    backgroundColor: Color(0xFF38A68C),
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: const Color(0xFF38A68C),
                   ),
-                  child: Text('Login', style: TextStyle(color: Colors.white)),
                 ),
-              ),
-              SizedBox(height: 20),
-              // Google Login Button
-              Container(
-                width: double.infinity,
-                child: ElevatedButton.icon(
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
                   onPressed: _signInWithGoogle,
-                  icon: Icon(Icons.login),
-                  label: Text('Login with Google'),
+                  icon: const Icon(Icons.login),
+                  label: const Text('Login with Google'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Colors.blue,
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              // Sign Up Link
-              Container(
-                child: TextButton(
+                const SizedBox(height: 20),
+                TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SignupScreen()),
                     );
                   },
-                  child: Text('Sign Up', style: TextStyle(color: Colors.black)),
+                  child: const Text('Sign Up',
+                      style: TextStyle(color: Colors.black)),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

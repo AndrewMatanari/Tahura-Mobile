@@ -32,6 +32,9 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController namaPemesanController = TextEditingController();
+    TextEditingController noKendaraanController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -59,6 +62,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
           children: [
             // Nama Pemesan
             TextField(
+              controller: namaPemesanController,
               decoration: InputDecoration(
                 labelText: 'Nama Pemesan',
                 border: OutlineInputBorder(
@@ -70,6 +74,7 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
 
             // Nomor Kendaraan
             TextField(
+              controller: noKendaraanController,
               decoration: InputDecoration(
                 labelText: 'Nomor Kendaraan',
                 border: OutlineInputBorder(
