@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:http/http.dart' as http;
+
 void main() {
   runApp(MyApp());
 }
@@ -18,14 +18,65 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class QRCodeScreen extends StatelessWidget {
-  final String transactionId = '1'; // ID transaksi
-  final String status = 'berhasil'; // Status baru
-  final String apiUrl = 'https://adminthp.mahasiswarandom.my.id/api/update-transaksi?'; // URL API
+class QRCodeScreen extends StatefulWidget {
+  @override
+  _QRCodeScreenState createState() => _QRCodeScreenState();
+}
 
-  // Fungsi untuk memperbarui status
-  Future<void> _updateStatus (BuildContext context) async {
-    final updateUrl = '$apiUrl&id=$transactionId&status=$status';
+class _QRCodeScreenState extends State<QRCodeScreen> {
+  String? transactionId;
+  String status = 'berhasil';
+  String apiUrl = 'https://adminthp.mahasiswarandom.my.id/api/update-transaksi';
+  String dataTransaksiUrl =
+      'https://adminthp.mahasiswarandom.my.id/api/data-transaksi?user_id=';
+  String userId = '1'; // Ganti dengan user_id yang sesuai
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLatestTransactionId(); // Ambil data transaksi saat inisialisasi
+  }
+
+  Future<void> _fetchLatestTransactionId() async {
+    final fullUrl = '$dataTransaksiUrl$userId';
+
+    try {
+      final response = await http.get(Uri.parse(fullUrl));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        // Periksa apakah data adalah daftar atau objek
+        if (data is List<dynamic> && data.isNotEmpty) {
+          // Jika data adalah List, ambil transaksi terakhir
+          final latestTransaction = data.last;
+          final kodeTiket = latestTransaction['id']; // Ambil kode tiket
+          setState(() {
+            transactionId = kodeTiket;
+          });
+        } else if (data is Map<String, dynamic>) {
+          // Jika data adalah Map, langsung ambil nilai
+          final kodeTiket = (data['data'].last['id']).toString(); // Ambil kode tiket
+          print('INI KODE TIKET: --------- ${kodeTiket} ------------');
+          setState(() {
+            transactionId = kodeTiket;
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal mengambil data transaksi.')),
+        );
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Terjadi kesalahan jaringan! Error:$e')),
+      );
+    }
+  }
+
+  Future<void> _updateStatus(BuildContext context) async {
+    final updateUrl = '$apiUrl?id=$transactionId&status=$status';
+
     try {
       final response = await http.get(Uri.parse(updateUrl));
 
@@ -35,35 +86,29 @@ class QRCodeScreen extends StatelessWidget {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memperbarui status. Kode: ${response.statusCode}')),
+          SnackBar(
+              content: Text(
+                  'Gagal memperbarui status. Kode: ${response.statusCode}')),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Terjadi kesalahan jaringan!')),
+        SnackBar(content: Text('Terjadi kesalahan jaringan qr!')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final qrData = '$apiUrl&id=$transactionId&status=$status';
+    final qrData = transactionId != null
+        ? '$apiUrl?id=$transactionId&status=$status'
+        : 'Loading...';
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Text(
-            'QR Code Tiket',
-            style: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+        title: Text(
+          'QR Code Tiket',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         backgroundColor: Colors.white,
@@ -73,57 +118,37 @@ class QRCodeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Sisa Waktu Berlaku
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Text(
-                  'Sisa Waktu Berlaku: 19:10:02',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+            if (transactionId == null)
+              CircularProgressIndicator()
+            else
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => _updateStatus(context),
+                    child: QrImageView(
+                      data: qrData,
+                      version: QrVersions.auto,
+                      size: 200.0,
+                      errorCorrectionLevel: QrErrorCorrectLevel.M,
+                      gapless: false,
+                      foregroundColor: Colors.black,
+                    ),
                   ),
-                ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Kode Tiket: $transactionId',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 24),
+                ],
               ),
-            ),
-            SizedBox(height: 24),
-
-            // QR Code
-            GestureDetector(
-              onTap: () => _updateStatus(context), // Update status saat di-tap
-              child: QrImageView(
-                data: qrData, // Data QR Code
-                version: QrVersions.auto,
-                size: 200.0,
-                errorCorrectionLevel: QrErrorCorrectLevel.M,
-                gapless: false,
-                foregroundColor: Colors.black,
-              ),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Kode Tiket: $transactionId',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 24),
-
-            // Tombol Kembali
             ElevatedButton(
               onPressed: () {
                 if (Navigator.canPop(context)) {
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Tidak ada halaman sebelumnya!'),
-                    ),
+                    SnackBar(content: Text('Tidak ada halaman sebelumnya!')),
                   );
                 }
               },
@@ -137,10 +162,9 @@ class QRCodeScreen extends StatelessWidget {
               child: Text(
                 'Kembali',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -149,4 +173,3 @@ class QRCodeScreen extends StatelessWidget {
     );
   }
 }
-
