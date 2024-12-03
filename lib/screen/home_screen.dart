@@ -11,6 +11,7 @@ import 'package:tahura_mobile/screen/pesan_tiket.dart';
 import 'package:tahura_mobile/screen/riwayat_screen.dart';
 import 'package:tahura_mobile/screen/settings_screen.dart';
 import 'package:tahura_mobile/screen/tike_screnn.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +21,56 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+   String? name;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLatestTransactionId(); // Fetch the transaction data when the widget is initialized
+  }
+
+  // Fetch the user data (name) from the API
+  Future<void> _fetchLatestTransactionId() async {
+    final fullUrl = 'https://adminthp.mahasiswarandom.my.id/api/data-user'; // Your API URL
+
+    try {
+      // Call API using the correct `http` package.
+      final response = await http.get(Uri.parse(fullUrl));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body); // Decode the response body into JSON.
+
+        // Check if the data is a List or Map and extract 'name'
+        if (data is List<dynamic> && data.isNotEmpty) {
+          // If data is a List, get the last element's 'name'
+          final userName = data.last['name']?.toString() ?? 'Unknown'; // Safely check if name exists
+          setState(() {
+            name = userName;
+          });
+        } else if (data is Map<String, dynamic>) {
+          // If data is a Map, directly access 'name'
+          final userName = data['name']?.toString() ?? 'Unknown'; // Safely check if 'name' exists
+          print('USERNAME: --------- ${userName} ------------');
+          setState(() {
+            name = userName;
+          });
+        }
+      } else {
+        // Handle the case where the API response code is not 200
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to fetch user data.')),
+        );
+      }
+    } catch (e) {
+      // Handle any network errors
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Network error! Error: $e')),
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,11 +215,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 200,
                       child: Text(
-                        'Selamat  Datang',
+                        'Selamat Datang, $name',
                         textAlign: TextAlign.start,
                         style: GoogleFonts.plusJakartaSans(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25.0,
+                          fontSize: 24,
                         ),
                       ),
                     ),
@@ -295,15 +346,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          'Atas nama',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                      children: [
+                                          if(name == null)
+                                            CircularProgressIndicator()
+                                          else
+                                          Text(
+                                            name!,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
                                         const SizedBox(
                                           height: 6,
                                         ),
@@ -538,4 +592,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 
