@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:tahura_mobile/models/user_model.dart';
 import 'package:tahura_mobile/screen/detailproduk_screen.dart';
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'User',
+                    name ?? 'Unknown',
                     style: GoogleFonts.plusJakartaSans(
                       color: Colors.black,
                       fontSize: 25,
@@ -247,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 7),
                         Text(
-                          'Sabtu, 23 November 2024',
+                          DateFormat('EEEE, dd MMMM yyyy').format(DateTime.now()),
                           style: GoogleFonts.plusJakartaSans(
                             color: Colors.black,
                             fontSize: 15,
@@ -286,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
                 Text(
-                  'Informasi Tiket',
+                  'Tiket Berlangsung',
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.black,
                     fontSize: 16,
@@ -304,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
-                              width: 230,
+                              width: 300,
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   boxShadow: [
@@ -329,15 +330,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         color: const Color.fromRGBO(
                                             56, 166, 140, 1),
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          'A0001',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                      child: const Icon(
+                                        Icons.confirmation_number,
+                                        color: Colors.white,
+                                        size: 30,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
@@ -360,13 +356,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         const SizedBox(
                                           height: 6,
-                                        ),
-                                        Text(
-                                          'Waktu Berlalu',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                          ),
                                         ),
                                       ],
                                     ),
