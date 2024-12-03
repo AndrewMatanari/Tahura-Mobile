@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
+import 'package:http/http.dart' as http;
 void main() {
   runApp(MyApp());
 }
@@ -17,15 +19,41 @@ class MyApp extends StatelessWidget {
 }
 
 class QRCodeScreen extends StatelessWidget {
+  final String transactionId = '1'; // ID transaksi
+  final String status = 'berhasil'; // Status baru
+  final String apiUrl = 'https://adminthp.mahasiswarandom.my.id/api/update-transaksi?'; // URL API
+
+  // Fungsi untuk memperbarui status
+  Future<void> _updateStatus (BuildContext context) async {
+    final updateUrl = '$apiUrl&id=$transactionId&status=$status';
+    try {
+      final response = await http.get(Uri.parse(updateUrl));
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Status berhasil diperbarui!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal memperbarui status. Kode: ${response.statusCode}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Terjadi kesalahan jaringan!')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final qrData = '$apiUrl&id=$transactionId&status=$status';
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.menu),
-          onPressed: () {
-            // Placeholder untuk menu
-          },
+          onPressed: () {},
         ),
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -52,8 +80,7 @@ class QRCodeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Text(
                   'Sisa Waktu Berlaku: 19:10:02',
                   style: TextStyle(
@@ -66,40 +93,23 @@ class QRCodeScreen extends StatelessWidget {
             SizedBox(height: 24),
 
             // QR Code
-            QrImageView(
-              data: 'Halo Bromi', // Data untuk QR Code
-              version: QrVersions.auto,
-              size: 200.0,
-              errorCorrectionLevel: QrErrorCorrectLevel.M,
-              gapless: false,
-              foregroundColor: Colors.black,
+            GestureDetector(
+              onTap: () => _updateStatus(context), // Update status saat di-tap
+              child: QrImageView(
+                data: qrData, // Data QR Code
+                version: QrVersions.auto,
+                size: 200.0,
+                errorCorrectionLevel: QrErrorCorrectLevel.M,
+                gapless: false,
+                foregroundColor: Colors.black,
+              ),
             ),
             SizedBox(height: 16),
             Text(
-              'Kode Tiket: THB-001',
+              'Kode Tiket: $transactionId',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 24),
-
-            // Detail Tiket
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DetailRow(label: 'Nama Pemesan:', value: 'Bromi'),
-                    DetailRow(label: 'Jumlah Pengunjung:', value: '1 Orang'),
-                    DetailRow(label: 'Kendaraan:', value: '-'),
-                  ],
-                ),
               ),
             ),
             SizedBox(height: 24),
@@ -140,35 +150,3 @@ class QRCodeScreen extends StatelessWidget {
   }
 }
 
-class DetailRow extends StatelessWidget {
-  final String label;
-  final String value;
-
-  DetailRow({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

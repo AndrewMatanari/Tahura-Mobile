@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:tahura_mobile/models/user_model.dart';
 import 'package:tahura_mobile/screen/detailproduk_screen.dart';
 import 'package:tahura_mobile/screen/katalog_screen.dart';
 import 'package:tahura_mobile/screen/login_screen.dart';
@@ -14,7 +17,8 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-  }
+}
+
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
@@ -28,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white.withOpacity(0.9),
         child: Padding(
           padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,17 +72,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(
                       'Riwayat Transaksi',
                       style: GoogleFonts.plusJakartaSans(
-                          color: Colors.black,
-                          fontSize: 17,
+                        color: Colors.black,
+                        fontSize: 17,
                       ),
                     ),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => RiwayatScreen(),
-                        )
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RiwayatScreen(),
+                          ));
                     },
                   ),
                   ListTile(
@@ -89,17 +92,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(
                       'Katalog',
                       style: GoogleFonts.plusJakartaSans(
-                          color: Colors.black,
-                          fontSize: 17,
+                        color: Colors.black,
+                        fontSize: 17,
                       ),
                     ),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => Katalog(),
-                        )
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Katalog(),
+                          ));
                     },
                   ),
                   ListTile(
@@ -110,17 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(
                       'Pengaturan',
                       style: GoogleFonts.plusJakartaSans(
-                          color: Colors.black,
-                          fontSize: 17,
+                        color: Colors.black,
+                        fontSize: 17,
                       ),
                     ),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
-                        )
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ));
                     },
                   ),
                 ],
@@ -133,14 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Text(
                   'Keluar',
                   style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 17,
+                    color: Colors.black,
+                    fontSize: 17,
                   ),
                 ),
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
                     (Route<dynamic> route) => false,
                   );
                 },
@@ -162,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: 200,
                       child: Text(
-                        'Selamat Pagi, User',
+                        'Selamat  Datang',
                         textAlign: TextAlign.start,
                         style: GoogleFonts.plusJakartaSans(
                           fontWeight: FontWeight.bold,
@@ -175,7 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,10 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Tanggal Pembelian',
                           style: GoogleFonts.plusJakartaSans(
-                            color: const Color.fromRGBO(56, 166, 140, 1),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          ),
+                              color: const Color.fromRGBO(56, 166, 140, 1),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 7),
                         Text(
@@ -203,16 +206,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PemesananTiketScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => PemesananTiketScreen()),
                     );
                   },
                   style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(56, 166, 140, 1)),
+                    backgroundColor:
+                        WidgetStatePropertyAll(Color.fromRGBO(56, 166, 140, 1)),
                   ),
                   child: Text(
                     'PESAN TIKET',
@@ -224,13 +231,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   'Informasi Tiket',
                   style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -240,110 +249,121 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            width: 230,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                  BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 5,
-                                  spreadRadius: 10,
-                                ),
-                              ]
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: 50,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: const Color.fromRGBO(56, 166, 140, 1),
+                          padding: const EdgeInsets.only(right: 15),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              width: 230,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 5,
+                                      spreadRadius: 10,
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        'A0001',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        'Atas nama',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6,),
-                                      Text(
-                                        'Waktu Berlalu',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 10),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => QRCodeScreen()),
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 30,
+                                  ]),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 50,
+                                      width: 70,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        color: const Color.fromRGBO(56, 166, 140, 1),
+                                        color: const Color.fromRGBO(
+                                            56, 166, 140, 1),
                                       ),
-                                      child: const Icon(
-                                        Icons.arrow_forward_rounded,
-                                        size: 20,
-                                        color: Colors.white,
+                                      child: Center(
+                                        child: Text(
+                                          'A0001',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    )
-                                  ),
-                                ],
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Atas nama',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 6,
+                                        ),
+                                        Text(
+                                          'Waktu Berlalu',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(width: 10),
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    QRCodeScreen()),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: const Color.fromRGBO(
+                                                56, 166, 140, 1),
+                                          ),
+                                          child: const Icon(
+                                            Icons.arrow_forward_rounded,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        )),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      );
+                          ));
                     },
                     itemCount: 1,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   'Rekomendasi Produk',
                   style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: 150,
                   child: ListView.builder(
@@ -358,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
-                                  BoxShadow(
+                                BoxShadow(
                                   color: Colors.grey.withOpacity(0.5),
                                   blurRadius: 5,
                                   spreadRadius: 10,
@@ -368,54 +388,61 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Tas Rotan',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Rp. 60.000',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const ProductDetailPage(
-                                              product: {
-                                              'image': 'img/tas 2.png',
-                                              'title': 'Tas Rotan',
-                                              'price': 'Rp. 60.000',
-                                              }
-                                            )),
-                                          );
-                                        },
-                                        child: Text(
-                                          'Selengkapnya',
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Tas Rotan',
                                           style: GoogleFonts.plusJakartaSans(
-                                            color: const Color.fromRGBO(56, 166, 140, 1),
-                                            fontSize: 15,
+                                            color: Colors.black,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Image.asset('img/tas 2.png', width: 170),
-                                ]
-                              ),
+                                        Text(
+                                          'Rp. 60.000',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ProductDetailPage(
+                                                          product: {
+                                                            'image':
+                                                                'img/tas 2.png',
+                                                            'title':
+                                                                'Tas Rotan',
+                                                            'price':
+                                                                'Rp. 60.000',
+                                                          })),
+                                            );
+                                          },
+                                          child: Text(
+                                            'Selengkapnya',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              color: const Color.fromRGBO(
+                                                  56, 166, 140, 1),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Image.asset('img/tas 2.png', width: 170),
+                                  ]),
                             ),
                           ),
                         ),
@@ -424,16 +451,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: 2,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   'Pengumuman',
                   style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: 150,
                   child: ListView.builder(
@@ -448,7 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
-                                  BoxShadow(
+                                BoxShadow(
                                   color: Colors.grey.withOpacity(0.5),
                                   blurRadius: 5,
                                   spreadRadius: 10,
@@ -458,7 +489,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -481,7 +513,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Text(
                                       'Selengkapnya',
                                       style: GoogleFonts.plusJakartaSans(
-                                        color: const Color.fromRGBO(56, 166, 140, 1),
+                                        color: const Color.fromRGBO(
+                                            56, 166, 140, 1),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -505,3 +538,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

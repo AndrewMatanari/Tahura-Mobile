@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tahura_mobile/screen/home_screen.dart';
 import 'package:tahura_mobile/screen/login_screen.dart';
+import 'package:tahura_mobile/screen/signup_screen.dart';
+import 'package:tahura_mobile/screen/tike_screnn.dart';
 import 'dart:async';
 import 'katalog_screen.dart';
 
@@ -31,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
       const Duration(seconds: 3),
       () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       ),
     );
   }

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:tahura_mobile/screen/bayar_splash.dart';
 import 'package:tahura_mobile/screen/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,15 +30,68 @@ class PemesananTiketScreen extends StatefulWidget {
 }
 
 class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
+  final namaPemesanController = TextEditingController();
+  final noKendaraanController = TextEditingController();
   int _jumlahOrang = 1;
   String? _kendaraan;
   String? _pembayaran;
+  final nowDate =
+      '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+
+  Future<void> _pesanTiket() async {
+  final namaPemesan = namaPemesanController.text.trim();
+  final noKendaraan = noKendaraanController.text.trim();
+
+  if (namaPemesan.isEmpty || noKendaraan.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('Nama Pemesan dan Nomor Kendaraan tidak boleh kosong')),
+    );
+    return;
+  }
+
+  try {
+    Uri uri = Uri.https('adminthp.mahasiswarandom.my.id', '/api/add-transaksi');
+
+    final response = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer YOUR_API_KEY' // Add authorization if required
+      },
+      body: jsonEncode({
+        'user_id': 1,
+        'kode_transaksi': 'THB-${DateTime.now().millisecondsSinceEpoch}',
+        'tanggal_transaksi': nowDate,
+        'jumlah': _jumlahOrang,
+        'total_harga': _jumlahOrang * 17000,
+        'no_kendaraan': noKendaraanController.text,
+        'jenis_kendaraan': _kendaraan,
+        'status': 'Pending',
+        'metode_pembayaran': _pembayaran,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BayarSplash()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Server error: ${response.statusCode}')),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error: $e")),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController namaPemesanController = TextEditingController();
-    TextEditingController noKendaraanController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -60,19 +117,15 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
         child: ListView(
           padding: EdgeInsets.all(16.0),
           children: [
-            // Nama Pemesan
             TextField(
               controller: namaPemesanController,
               decoration: InputDecoration(
-                labelText: 'Nama Pemesan',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                )
-              ),
+                  labelText: 'Nama Pemesan',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  )),
             ),
             SizedBox(height: 16.0),
-
-            // Nomor Kendaraan
             TextField(
               controller: noKendaraanController,
               decoration: InputDecoration(
@@ -83,8 +136,6 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
               ),
             ),
             SizedBox(height: 16.0),
-
-            // Tanggal
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
               decoration: BoxDecoration(
@@ -92,13 +143,11 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                 borderRadius: BorderRadius.circular(12.0),
               ),
               child: Text(
-                'Rabu, 12 Agustus 2020',
+                nowDate,
                 style: GoogleFonts.plusJakartaSans(fontSize: 16.0),
               ),
             ),
             SizedBox(height: 16.0),
-
-            // Jumlah Orang
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -132,8 +181,6 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
               ],
             ),
             SizedBox(height: 16.0),
-
-            // Kendaraan
             Text(
               'Jenis Kendaraan:',
               style: GoogleFonts.plusJakartaSans(
@@ -149,8 +196,6 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
               ],
             ),
             SizedBox(height: 16.0),
-
-            // Metode Pembayaran
             Text(
               'Metode Pembayaran:',
               style: GoogleFonts.plusJakartaSans(
@@ -225,8 +270,6 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
               ],
             ),
             SizedBox(height: 16.0),
-
-            // Detail Pembayaran
             Text(
               'Detail Pembayaran:',
               style: GoogleFonts.plusJakartaSans(
@@ -237,16 +280,8 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
             _buildPaymentDetailRow('Harga Parkir', 'Rp 5.000'),
             _buildPaymentDetailRow('Total Harga', 'Rp 22.000'),
             SizedBox(height: 16.0),
-
-            // Tombol Bayar
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BayarSplash(),
-                  ),
-                );
-              },
+              onPressed: _pesanTiket,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(56, 166, 140, 1),
                 shape: RoundedRectangleBorder(
