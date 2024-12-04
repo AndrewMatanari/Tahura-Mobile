@@ -119,10 +119,10 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
     });
 
     // Check if the ticket type and vehicle constraints are satisfied
-    if (_jenisTiket == 'Rombongan' && _jumlahOrang < 15) {
+    if (_jenisTiket == 'Rombongan' && _jumlahOrang < 30) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Untuk tiket rombongan, jumlah orang minimal 15')),
+            content: Text('Untuk tiket rombongan, jumlah orang minimal 30')),
       );
       return;
     }
@@ -141,9 +141,9 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
       return;
     }
 
-    if (_kendaraan == 'Bus' && _jumlahOrang < 15) {
+    if (_kendaraan == 'Bus' && _jumlahOrang < 30) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Bus minimal untuk 15 orang')),
+        const SnackBar(content: Text('Bus minimal untuk 30 orang')),
       );
       return;
     }
@@ -190,6 +190,8 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
     }
   }
 
+  bool enable = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,8 +232,8 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                   onChanged: (value) {
                     setState(() {
                       _jenisTiket = value.toString();
-                      _jumlahOrang =
-                          1; // Reset people count when ticket type changes
+                      _jumlahOrang = 1; // Reset people count when ticket type changes
+                      enable = true;
                     });
                   },
                 ),
@@ -244,7 +246,8 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                   onChanged: (value) {
                     setState(() {
                       _jenisTiket = value.toString();
-                      _jumlahOrang = 15; // Set default to 15 for Rombongan
+                      _jumlahOrang = 30;
+                      enable = false;
                     });
                   },
                 ),
@@ -316,8 +319,10 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                           if (_jenisTiket == 'Perorang' &&
                               (_kendaraan == 'Sepeda Motor' &&
                                       _jumlahOrang < 2 ||
-                                  _kendaraan == 'Mobil' && _jumlahOrang < 6 ||
-                                  _kendaraan == 'Bus' && _jumlahOrang < 15)) {
+                                  _kendaraan == 'Mobil' && _jumlahOrang < 6)
+                          ) {
+                            _jumlahOrang++;
+                          } else if(_jenisTiket == 'Rombongan' && _kendaraan == 'Bus' && _jumlahOrang < 30) {
                             _jumlahOrang++;
                           }
                           _hitungHarga(); // Recalculate the price
@@ -334,10 +339,10 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
                 style: GoogleFonts.plusJakartaSans(fontSize: 16.0)),
             Column(
               children: [
-                _buildCheckbox('Sepeda Motor', 'Sepeda Motor'),
-                _buildCheckbox('Mobil', 'Mobil'),
-                _buildCheckbox('Bus', 'Bus'),
-                _buildCheckbox('Tanpa Kendaraan', 'Tanpa Kendaraan'),
+                _buildCheckbox('Sepeda Motor', 'Sepeda Motor', enable),
+                _buildCheckbox('Mobil', 'Mobil', enable),
+                _buildCheckbox('Bus', 'Bus', !enable),
+                _buildCheckbox('Tanpa Kendaraan', 'Tanpa Kendaraan', enable),
               ],
             ),
             SizedBox(height: 16.0),
@@ -439,10 +444,11 @@ class _PemesananTiketScreenState extends State<PemesananTiketScreen> {
     );
   }
 
-  Widget _buildCheckbox(String label, String value) {
+  Widget _buildCheckbox(String label, String value, bool isDisable) {
     return Container(
       width: 300,
       child: CheckboxListTile(
+        enabled: isDisable,
         value: _kendaraan == value,
         onChanged: (selected) {
           setState(() {

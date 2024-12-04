@@ -55,7 +55,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
           });
         } else if (data is Map<String, dynamic>) {
           // Jika data adalah Map, langsung ambil nilai
-          final kodeTiket = (data['data'].last['id']).toString(); // Ambil kode tiket
+          final kodeTiket = (data['data'].first['id']).toString(); // Ambil kode tiket
           print('INI KODE TIKET: --------- ${kodeTiket} ------------');
           setState(() {
             transactionId = kodeTiket;
