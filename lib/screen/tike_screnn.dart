@@ -113,61 +113,64 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (transactionId == null)
-              CircularProgressIndicator()
-            else
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () => _updateStatus(context),
-                    child: QrImageView(
-                      data: qrData,
-                      version: QrVersions.auto,
-                      size: 200.0,
-                      errorCorrectionLevel: QrErrorCorrectLevel.M,
-                      gapless: false,
-                      foregroundColor: Colors.black,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (transactionId == null)
+                CircularProgressIndicator()
+              else
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _updateStatus(context),
+                      child: QrImageView(
+                        data: qrData,
+                        version: QrVersions.auto,
+                        size: 300,
+                        errorCorrectionLevel: QrErrorCorrectLevel.M,
+                        gapless: false,
+                        foregroundColor: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Kode Tiket: $transactionId',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(height: 24),
-                ],
-              ),
-            ElevatedButton(
-              onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Tidak ada halaman sebelumnya!')),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(56, 166, 140, 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                    SizedBox(height: 16),
+                    Text(
+                      'Kode Tiket: $transactionId',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 24),
+                  ],
                 ),
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+              ElevatedButton(
+                onPressed: () {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Tidak ada halaman sebelumnya!')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(56, 166, 140, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                ),
+                child: Text(
+                  'Kembali',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
-              child: Text(
-                'Kembali',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -226,6 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Image.asset(
                       'img/home_image.png',
+                      width: 150,
                     ),
                   ],
                 ),
